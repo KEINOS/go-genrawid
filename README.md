@@ -41,15 +41,43 @@ So, in theory, if you know the rawid of the content, you can find it twice as fa
 
 On the other hand, **this command/package is of little use** when using SQLite3 as [RDB](https://en.wikipedia.org/wiki/Relational_database) (Relational Database) or when dealing with mutable content.
 
-## CONTRIBUTING
+## Install
 
-- Bug/security report: [Issues](https://github.com/KEINOS/go-genrawid/issues)
-- Anything fot the better: Feel free to PR!
+Download the binary for your operating system and architecture and place it as an executable in your PATH.
 
-### Statuses
+- [Latest Releases](https://github.com/KEINOS/go-genrawid/releases/latest) (Windows, macOS, Linux, RaspberryPi)
 
-[![go1.16+](https://github.com/KEINOS/go-genrawid/actions/workflows/go-versions.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/go-versions.yml)
+For [Homebrew/Linuxbrew](https://brew.sh/) users:
+
+```bash
+brew install KEINOS/apps/genrawid
+```
+
+## Statuses
+
 [![golangci-lint](https://github.com/KEINOS/go-genrawid/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/golangci-lint.yml)
-[![Codecov](https://github.com/KEINOS/go-genrawid/actions/workflows/code-coverage.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/code-coverage.yml)
+[![codecov](https://codecov.io/gh/KEINOS/go-genrawid/branch/main/graph/badge.svg?token=cFoXdcwtaj)](https://codecov.io/gh/KEINOS/go-genrawid)
+[![Go Report Card](https://goreportcard.com/badge/github.com/KEINOS/go-genrawid)](https://goreportcard.com/report/github.com/KEINOS/go-genrawid)
 [![CodeQL](https://github.com/KEINOS/go-genrawid/actions/workflows/codeQL-analysis.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/codeQL-analysis.yml)
 [![Weekly Update](https://github.com/KEINOS/go-genrawid/actions/workflows/weekly-update.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/weekly-update.yml)
+
+## CONTRIBUTING
+
+[![go1.16+](https://github.com/KEINOS/go-genrawid/actions/workflows/go-versions.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/go-versions.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/KEINOS/go-genrawid.svg)](https://pkg.go.dev/github.com/KEINOS/go-genrawid/ "View document")
+[![Opened Issues](https://img.shields.io/github/issues/KEINOS/go-genrawid?color=lightblue&logo=github)](https://github.com/KEINOS/go-genrawid/issues "opened issues")
+[![PR](https://img.shields.io/github/issues-pr/KEINOS/go-genrawid?color=lightblue&logo=github)](https://github.com/KEINOS/go-genrawid/pulls "Pull Requests")
+
+- [GolangCI Lint](https://golangci-lint.run/) rules: [.golangci-lint.yml](https://github.com/KEINOS/go-genrawid/blob/main/.golangci.yml)
+- To run tests in a container:
+  - `docker-compose --file ./.github/docker-compose.yml run v1_17`
+  - This will run:
+    - `go test -cover -race ./...`
+    - `golangci-lint run`
+    - `golint ./...`
+- Branch to PR: `main`
+  - It is recommended that [DraftPR](https://github.blog/2019-02-14-introducing-draft-pull-requests/) be done first to avoid duplication of work.
+
+## License
+
+- [MIT](https://github.com/KEINOS/go-genrawid/blob/main/LICENSE), Copyright (c) [KEINOS and the GenRawID contributors](https://github.com/KEINOS/go-genrawid/graphs/contributors).
