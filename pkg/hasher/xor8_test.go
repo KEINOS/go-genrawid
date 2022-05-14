@@ -10,6 +10,10 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// Example of _xor8
+//
+// Example of the use of the private function _xor8. This function is implemented
+// internally, but its use is currently on hold due to speed and accuracy issues.
 func Example_xor8() {
 	input := "this is a sample data"
 	r := strings.NewReader(input)

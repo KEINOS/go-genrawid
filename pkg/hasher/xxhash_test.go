@@ -10,6 +10,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+// Example of the use of the private function _xxhash. To use it from public see
+// the CheckSum (Xxhash) example.
 func Example_xxhash() {
 	input := "a"
 	r := strings.NewReader(input)

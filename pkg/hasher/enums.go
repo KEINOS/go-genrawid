@@ -5,9 +5,11 @@ package hasher
 // ----------------------------------------------------------------------------
 
 // THashAlgo is an enum type that represents the hash algorithm.
+// It also implements the fmt.Stringer interface.
 type THashAlgo int
 
 // TChkSumAlgo is an enum type that represents the checksum algorithm.
+// It also implements the fmt.Stringer interface.
 type TChkSumAlgo int
 
 // ----------------------------------------------------------------------------
@@ -40,6 +42,7 @@ const (
 // ----------------------------------------------------------------------------
 
 // String returns the string representation of the hash algorithm.
+// This is an implementation of fmt.Stringer interface.
 func (h THashAlgo) String() string {
 	switch h {
 	case HashAlgoBLAKE3:
@@ -52,6 +55,7 @@ func (h THashAlgo) String() string {
 }
 
 // String returns the string representation of the hash algorithm.
+// This is an implementation of fmt.Stringer interface.
 func (h TChkSumAlgo) String() string {
 	switch h {
 	case ChkSumCRC32:

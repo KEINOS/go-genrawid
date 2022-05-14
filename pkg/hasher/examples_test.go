@@ -97,3 +97,33 @@ func ExampleHash() {
 	// Length of full hash   : 64 bytes
 	// First 32 bytes of hash: a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a6
 }
+
+func ExampleTChkSumAlgo_String() {
+	for _, chkSumAlgo := range []hasher.TChkSumAlgo{
+		hasher.ChkSumUnknown,
+		hasher.ChkSumCRC32,
+		hasher.ChkSumXXHash,
+	} {
+		fmt.Printf("Value: %#v, String: %s\n", chkSumAlgo, chkSumAlgo)
+	}
+
+	// Output:
+	// Value: 0, String: unknown
+	// Value: 1, String: crc32
+	// Value: 2, String: xxhash
+}
+
+func ExampleTHashAlgo_String() {
+	for _, chkSumAlgo := range []hasher.THashAlgo{
+		hasher.HashAlgoUnknown,
+		hasher.HashAlgoBLAKE3,
+		hasher.HashAlgoSHA3_512,
+	} {
+		fmt.Printf("Value: %#v, String: %s\n", chkSumAlgo, chkSumAlgo)
+	}
+
+	// Output:
+	// Value: 0, String: unknown
+	// Value: 1, String: blake3
+	// Value: 2, String: sha3-512
+}
