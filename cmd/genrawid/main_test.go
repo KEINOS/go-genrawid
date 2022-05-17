@@ -1,13 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
 	"testing"
 
 	"github.com/KEINOS/go-genrawid"
-	"github.com/KEINOS/go-utiles/util"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/zenizh/go-capturer"
@@ -20,6 +20,23 @@ import (
 // ----------------------------------------------------------------------------
 //  Golden Cases
 // ----------------------------------------------------------------------------
+
+func Test_main_golden_base62(t *testing.T) {
+	// Set args
+	deferRecover := setDummyArgs(t, []string{
+		"--base62",
+		"../../testdata/msg.txt",
+	})
+	defer deferRecover()
+
+	out := capturer.CaptureStdout(func() {
+		main()
+	})
+
+	expect := "j1UNoJA6ku6"
+	actual := out
+	assert.Equal(t, expect, actual)
+}
 
 func Test_main_golden_file(t *testing.T) {
 	// Set args
@@ -48,23 +65,6 @@ func Test_main_golden_help(t *testing.T) {
 
 	assert.Contains(t, out, "Usage:")
 	assert.Contains(t, out, "Flags:")
-}
-
-func Test_main_golden_base62(t *testing.T) {
-	// Set args
-	deferRecover := setDummyArgs(t, []string{
-		"--base62",
-		"../../testdata/msg.txt",
-	})
-	defer deferRecover()
-
-	out := capturer.CaptureStdout(func() {
-		main()
-	})
-
-	expect := "j1UNoJA6ku6"
-	actual := out
-	assert.Equal(t, expect, actual)
 }
 
 func Test_main_golden_hex_and_newline(t *testing.T) {
@@ -152,7 +152,7 @@ func Test_main_missing_args(t *testing.T) {
 	defer recoverOsExit()
 
 	// Capture error
-	out := capturer.CaptureStderr(func() {
+	out := capturer.CaptureOutput(func() {
 		main()
 	})
 
@@ -179,9 +179,8 @@ func Test_main_path_was_dir(t *testing.T) {
 	})
 
 	assert.Equal(t, 1, status, "it should exit with status 1 on error")
-
+	assert.Contains(t, out, "failed to read from file")
 	assert.Contains(t, out, "failed to read during scanning")
-	assert.Contains(t, out, "is a directory")
 }
 
 func Test_main_stdin_error(t *testing.T) {
@@ -213,8 +212,8 @@ func Test_main_stdin_error(t *testing.T) {
 
 	assert.Equal(t, 1, status, "it should exit with status 1 on error")
 
+	assert.Contains(t, out, "failed to read from STDIN")
 	assert.Contains(t, out, "failed to read during scanning")
-	assert.Contains(t, out, "is a directory")
 }
 
 func Test_main_too_many_args(t *testing.T) {
@@ -264,7 +263,6 @@ func Test_main_verify_error(t *testing.T) {
 	})
 
 	assert.Equal(t, 1, status, "it should exit with status 1 on error")
-
 	assert.Contains(t, out, "the two rawids did not match")
 }
 
@@ -275,14 +273,15 @@ func Test_main_verify_error(t *testing.T) {
 func captureExitStatus(t *testing.T, status *int) func() {
 	t.Helper()
 
-	oldOsExit := util.OsExit
+	oldOsExit := OsExit
 
-	util.OsExit = func(code int) {
+	OsExit = func(code int) {
+		fmt.Fprintln(os.Stderr, "exit status:", code)
 		*status = code
 	}
 
 	return func() {
-		util.OsExit = oldOsExit
+		OsExit = oldOsExit
 	}
 }
 
@@ -309,6 +308,8 @@ func mockSTDIN(t *testing.T, input string) func() {
 	genrawid.OsStdin = osFile // <-- mock!
 
 	return func() {
+		osFile.Close()
+
 		genrawid.OsStdin = oldOsStdin // recover the stdin
 	}
 }
@@ -320,7 +321,10 @@ func setDummyArgs(t *testing.T, args []string) func() {
 	oldOsArgs := os.Args
 
 	// Mock args
-	os.Args = append([]string{t.Name()}, args...)
+	os.Args = []string{t.Name()}
+	if len(args) > 0 {
+		os.Args = append(os.Args, args...)
+	}
 
 	return func() {
 		os.Args = oldOsArgs // restore args
