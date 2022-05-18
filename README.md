@@ -55,15 +55,21 @@ brew install KEINOS/apps/genrawid
 
 ## Statuses
 
-[![golangci-lint](https://github.com/KEINOS/go-genrawid/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/golangci-lint.yml)
+- Unit Tests/Code Coverage
+
+[![go1.16+](https://github.com/KEINOS/go-genrawid/actions/workflows/go-versions.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/go-versions.yml)
+[![PlatformTests](https://github.com/KEINOS/go-genrawid/actions/workflows/platform-test.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/platform-test.yml)
 [![codecov](https://codecov.io/gh/KEINOS/go-genrawid/branch/main/graph/badge.svg?token=cFoXdcwtaj)](https://codecov.io/gh/KEINOS/go-genrawid)
 [![Go Report Card](https://goreportcard.com/badge/github.com/KEINOS/go-genrawid)](https://goreportcard.com/report/github.com/KEINOS/go-genrawid)
+
+- Secrurity/Vulnerability Check
+
+[![golangci-lint](https://github.com/KEINOS/go-genrawid/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/golangci-lint.yml)
 [![CodeQL](https://github.com/KEINOS/go-genrawid/actions/workflows/codeQL-analysis.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/codeQL-analysis.yml)
 [![Weekly Update](https://github.com/KEINOS/go-genrawid/actions/workflows/weekly-update.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/weekly-update.yml)
 
 ## CONTRIBUTING
 
-[![go1.16+](https://github.com/KEINOS/go-genrawid/actions/workflows/go-versions.yml/badge.svg)](https://github.com/KEINOS/go-genrawid/actions/workflows/go-versions.yml)
 [![Go Reference](https://pkg.go.dev/badge/github.com/KEINOS/go-genrawid.svg)](https://pkg.go.dev/github.com/KEINOS/go-genrawid/ "View document")
 [![Opened Issues](https://img.shields.io/github/issues/KEINOS/go-genrawid?color=lightblue&logo=github)](https://github.com/KEINOS/go-genrawid/issues "opened issues")
 [![PR](https://img.shields.io/github/issues-pr/KEINOS/go-genrawid?color=lightblue&logo=github)](https://github.com/KEINOS/go-genrawid/pulls "Pull Requests")

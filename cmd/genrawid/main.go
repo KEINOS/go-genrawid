@@ -3,20 +3,20 @@ package main
 import (
 	"fmt"
 	"hash/crc32"
+	"os"
 
 	"github.com/KEINOS/go-genrawid"
 	"github.com/KEINOS/go-genrawid/pkg/hasher"
 	"github.com/KEINOS/go-genrawid/pkg/rawid"
-	"github.com/KEINOS/go-utiles/util"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
 )
 
 var (
-	inStr    = "" // it holds the input string from the arg.
-	inVerify = "" // it holds the gigen rawid to compare.
-	lf       = "" // line-feed to use if set.
-	pathFile = "" // file path to read if set.
+	inStr    string // it holds the input string from the arg.
+	inVerify string // it holds the given rawid to compare.
+	lf       string // line-feed to use if set.
+	pathFile string // file path to read if set.
 
 	isBase62 bool // outputs the results in base62 if true.
 	isFile   bool // read input from file.
@@ -33,12 +33,23 @@ var (
 // ----------------------------------------------------------------------------
 
 func main() {
-	util.ExitOnErr(Run())
+	ExitOnError(Run())
 }
 
 // ----------------------------------------------------------------------------
 //  Public Functions
 // ----------------------------------------------------------------------------
+
+// OsExit is a copy of os.Exit() to ease testing.
+var OsExit = os.Exit
+
+// ExitOnError exits with status 1 if err is an error.
+func ExitOnError(err error) {
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err.Error())
+		OsExit(1)
+	}
+}
 
 // PreRun : parse flag and checks the option status.
 func PreRun() error {
@@ -106,11 +117,12 @@ func Run() (err error) {
 	output := ""
 
 	// Format output
-	if isHex {
+	switch {
+	case isHex:
 		output = fmt.Sprintf("0x%v%v", id.Hex(), lf)
-	} else if isBase62 {
+	case isBase62:
 		output = fmt.Sprintf("%v%v", id.Base62(), lf)
-	} else {
+	default:
 		output = fmt.Sprintf("%v%v", id.Dec(), lf)
 	}
 
@@ -134,6 +146,23 @@ func Run() (err error) {
 //  Private Functions
 // ----------------------------------------------------------------------------
 
+// Set flag/option values to default.
+func resetFlagValues() {
+	isBase62 = false
+	isFile = false
+	isHelp = false
+	isHex = false
+	isLF = false
+	isStdin = false
+	isString = false
+	isVerify = false
+
+	inStr = ""
+	inVerify = ""
+	lf = ""
+	pathFile = ""
+}
+
 // Set flags to default values.
 func setFlags() {
 	// Default algorithm
@@ -142,16 +171,9 @@ func setFlags() {
 	hasher.CRC32Poly = crc32.Castagnoli
 
 	// Default flag values
-	isString = false
-	isStdin = false
-	isHelp = false
-	isHex = false
-	isBase62 = false
-	isLF = false
-	inStr = ""
-	inVerify = ""
-	lf = ""
+	resetFlagValues()
 
+	// Initialize flags
 	if !pflag.Parsed() {
 		pflag.BoolVar(&isBase62, "base62", false, "outputs the rawid in Base62 encoded string (uses: 0-9,a-z,A-Z)")
 		pflag.BoolVarP(&isHelp, "help", "h", false, "displays this help")
@@ -163,8 +185,8 @@ func setFlags() {
 }
 
 func chkOptFile(args []string) {
+	// Stdin and File input cannot coexist
 	if len(args) > 0 && args[0] != "-" {
-		// Stdin and File input cannot coexist
 		isStdin = false
 		isFile = true
 		pathFile = args[0]
@@ -179,8 +201,8 @@ func chkOptLineFeed() {
 }
 
 func chkOptStdin(args []string) {
+	// Stdin and File input cannot coexist
 	if len(args) > 0 && args[0] == "-" {
-		// Stdin and File input cannot coexist
 		isStdin = true
 		isFile = false
 	}

@@ -1,6 +1,6 @@
 # This workflow runs the unit test (`go test ./...`) on vaious platforms,
 # such as: Linux, macOS and Windows.
-name: PlatformTests
+name: Platform Tests
 
 on:
   workflow_dispatch:
@@ -36,6 +36,7 @@ jobs:
         run: go mod download
 
       - name: Run unit test
+        shell: bash
         run: |
           go mod download
-          go test -race -v ./...
+          go test -v ./...
