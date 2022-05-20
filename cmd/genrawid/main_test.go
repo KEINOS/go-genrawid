@@ -85,6 +85,24 @@ func Test_main_golden_hex_and_newline(t *testing.T) {
 	assert.Equal(t, expect, actual)
 }
 
+func Test_main_golden_mode_fast(t *testing.T) {
+	// Set args
+	deferRecover := setDummyArgs(t, []string{
+		"--fast",
+		"--hex",
+		"../../testdata/msg.txt",
+	})
+	defer deferRecover()
+
+	out := capturer.CaptureStdout(func() {
+		main()
+	})
+
+	expect := "0xddaa2ac30a98963b"
+	actual := out
+	assert.Equal(t, expect, actual)
+}
+
 func Test_main_golden_stdin(t *testing.T) {
 	// Mock stdin
 	deferRecover := mockSTDIN(t, "abcdefgh")

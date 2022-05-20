@@ -128,3 +128,22 @@ func Test_genRawid_use_undefined_algo(t *testing.T) {
 	assert.Contains(t, err.Error(), "failed to generate rawid")
 	assert.Nil(t, rawid)
 }
+
+func Test_replaceLast16bit(t *testing.T) {
+	inHash := []byte{0x01, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08}
+	inChkSum := uint16(0xffff)
+
+	expect := []byte{0x01, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0xff, 0xff}
+	actual := replaceLast16bit(inHash, inChkSum)
+
+	assert.Equal(t, expect, actual, "the last 2 bytes of the rawid should be replaced with the checksum")
+}
+
+func Test_xorSliceByte(t *testing.T) {
+	input := []byte{0x01, 0x01, 0x02, 0x03, 0x04, 0x05}
+
+	expect := uint16(0x0707) // 0x01 ^ 0x02 ^ 0x4 = 0x07, 0x01 ^ 0x03 ^ 0x5 = 0x07
+	actual := xorSliceByte(input)
+
+	assert.Equal(t, expect, actual)
+}

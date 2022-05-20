@@ -23,6 +23,10 @@ import (
 // OsStdin is a copy of os.Stdin to ease testing. Mock this variable during tests.
 var OsStdin = os.Stdin
 
+// IsModeFast is the flag to use fast mode. It will use the last 16bit of the hash
+// as the xor16 checksum.
+var IsModeFast = false
+
 // ----------------------------------------------------------------------------
 //  Functions (Public)
 // ----------------------------------------------------------------------------
@@ -78,13 +82,52 @@ func genRawid(input io.Reader) (rawid.ID, error) {
 	}
 
 	// Calculate checksum of the hash.
-	r := bytes.NewReader(hashByte)
+	if !IsModeFast {
+		r := bytes.NewReader(hashByte)
 
-	sumByte, err := hasher.CheckSum(r)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to generate rawid")
+		sumByte, err := hasher.CheckSum(r)
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to generate rawid")
+		}
+
+		// Combine the fisrt 4 Bytes of the hash and the checksum as a rawid.
+		return chopAndMergeBytes(hashByte, sumByte)
 	}
 
-	// Combine the fisrt 4 Bytes of the hash and the checksum as a rawid.
-	return chopAndMergeBytes(hashByte, sumByte)
+	// ------------------------------------------------------------------------
+	// Fast mode: use the last 16 bit/2 Bytes of the hash as the xor16 checksum.
+	// Important:
+	//   This mode is currently hidden since it was not fast enough as expected.
+	// ------------------------------------------------------------------------
+
+	// Calculate the xor16 checksum of the hash.
+	chkSum := xorSliceByte(hashByte)
+	rawid := make([]byte, 8)
+
+	// Set hash
+	copy(rawid, hashByte)
+
+	// Set the last 2 bytes(16bit) of the hash as the checksum.
+	return replaceLast16bit(rawid, chkSum), nil
+}
+
+func replaceLast16bit(input []byte, xor16 uint16) []byte {
+	input[len(input)-2] = byte(xor16 >> 8)
+	input[len(input)-1] = byte(xor16)
+
+	return input
+}
+
+func xorSliceByte(input []byte) uint16 {
+	var out uint16 = 0
+
+	for i, b := range input {
+		if i%2 == 0 {
+			out ^= uint16(b)
+		} else {
+			out ^= uint16(b) << 8
+		}
+	}
+
+	return out
 }
