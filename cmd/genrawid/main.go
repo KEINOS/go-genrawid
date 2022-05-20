@@ -19,6 +19,7 @@ var (
 	pathFile string // file path to read if set.
 
 	isBase62 bool // outputs the results in base62 if true.
+	isFast   bool // fast mode if true.
 	isFile   bool // read input from file.
 	isHelp   bool // diplays help if true.
 	isHex    bool // outputs the results in hex if true.
@@ -71,6 +72,7 @@ func PreRun() error {
 	chkOptStdin(args) // - (stdin) option check
 	chkOptString()    // --string option check
 	chkOptVerify()    // --verify option check
+	chkModeFast()     // --fast option check
 
 	switch {
 	case isHelp:
@@ -146,42 +148,8 @@ func Run() (err error) {
 //  Private Functions
 // ----------------------------------------------------------------------------
 
-// Set flag/option values to default.
-func resetFlagValues() {
-	isBase62 = false
-	isFile = false
-	isHelp = false
-	isHex = false
-	isLF = false
-	isStdin = false
-	isString = false
-	isVerify = false
-
-	inStr = ""
-	inVerify = ""
-	lf = ""
-	pathFile = ""
-}
-
-// Set flags to default values.
-func setFlags() {
-	// Default algorithm
-	hasher.HashAlgo = hasher.HashAlgoBLAKE3
-	hasher.ChkSumAlgo = hasher.ChkSumCRC32
-	hasher.CRC32Poly = crc32.Castagnoli
-
-	// Default flag values
-	resetFlagValues()
-
-	// Initialize flags
-	if !pflag.Parsed() {
-		pflag.BoolVar(&isBase62, "base62", false, "outputs the rawid in Base62 encoded string (uses: 0-9,a-z,A-Z)")
-		pflag.BoolVarP(&isHelp, "help", "h", false, "displays this help")
-		pflag.BoolVar(&isHex, "hex", false, "outputs the rawid in hex string")
-		pflag.BoolVarP(&isLF, "new-line", "n", false, "line-feed/line-breaks after the output")
-		pflag.StringVarP(&inStr, "string", "s", "", "provide the input via args")
-		pflag.StringVar(&inVerify, "verify", "", "the rawid to verify")
-	}
+func chkModeFast() {
+	genrawid.IsModeFast = isFast
 }
 
 func chkOptFile(args []string) {
@@ -220,4 +188,52 @@ func chkOptVerify() {
 		// Flag up if rawid was provided to verify
 		isVerify = true
 	}
+}
+
+// Set flag/option values to default.
+func resetFlagValues() {
+	isBase62 = false
+	isFast = false
+	isFile = false
+	isHelp = false
+	isHex = false
+	isLF = false
+	isStdin = false
+	isString = false
+	isVerify = false
+
+	inStr = ""
+	inVerify = ""
+	lf = ""
+	pathFile = ""
+}
+
+// Set flags to default values.
+func setFlags() {
+	// Set default algorithm
+	hasher.HashAlgo = hasher.HashAlgoBLAKE3
+	hasher.ChkSumAlgo = hasher.ChkSumCRC32
+	hasher.CRC32Poly = crc32.Castagnoli
+
+	// Set default mode
+	genrawid.IsModeFast = false
+
+	// Set default flag values
+	resetFlagValues()
+
+	// Initialize flags before parsing
+	if !pflag.Parsed() {
+		pflag.BoolVar(&isBase62, "base62", false, "outputs the rawid in Base62 encoded string (uses: 0-9,a-z,A-Z)")
+		pflag.BoolVarP(&isHelp, "help", "h", false, "displays this help")
+		pflag.BoolVarP(&isFast, "fast", "f", false, "fast mode (uses: XOR16 for checksum)")
+		pflag.BoolVar(&isHex, "hex", false, "outputs the rawid in hex string")
+		pflag.BoolVarP(&isLF, "new-line", "n", false, "line-feed/line-breaks after the output")
+		pflag.StringVarP(&inStr, "string", "s", "", "provide the input via args")
+		pflag.StringVar(&inVerify, "verify", "", "the rawid to verify")
+	}
+
+	// Hide 'fast' flag.
+	// It wasn't fast enough as expected. So, currently it's disabled.
+	_ = pflag.CommandLine.MarkHidden("fast")
+	_ = pflag.CommandLine.MarkHidden("f")
 }

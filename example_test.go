@@ -44,6 +44,30 @@ func ExampleFromFile() {
 	// -2474118025671277174
 }
 
+func ExampleFromFile_fast_mode() {
+	oldMode := genrawid.IsModeFast
+	defer func() {
+		genrawid.IsModeFast = oldMode
+	}()
+
+	// Set to fast mode
+	genrawid.IsModeFast = true
+
+	pathFile := "./testdata/msg.txt" // msg.txt ==> "abcdefgh"
+
+	rawid, err := genrawid.FromFile(pathFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(rawid.Hex())
+	fmt.Println(rawid.Dec())
+
+	// Output:
+	// ddaa2ac30a98963b
+	// -2474118028101904837
+}
+
 // ExampleFromStdin
 //
 // Since we can not receive input from stdin during the example run, we mock
