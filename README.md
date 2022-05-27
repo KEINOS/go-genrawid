@@ -1,6 +1,6 @@
 # GenRawID
 
-`genrawid` is a niche command line tool and/or Go package to generate a unique consistent number from the imput.
+`genrawid` is a niche command line tool and/or Go package to generate a unique consistent number from the input.
 
 ```shellsession
 $ genrawid --string "abcdefgh"
