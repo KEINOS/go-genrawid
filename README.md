@@ -27,6 +27,9 @@ By default, [BLAKE3](https://en.wikipedia.org/wiki/BLAKE_(hash_function)#BLAKE3)
 8 Bytes = The first 4 Bytes of the hash + 4 Bytes of the checksum of the hash
 ```
 
+- See benchmark of BLAKE3 and CRC-32 comparing to other hash algorithms:
+    - https://github.com/KEINOS/go-blake3-example/blob/main/bench_results/bench_results_stats.txt
+
 ## Why?
 
 The main objective is to use [SQLite3](https://www.sqlite.org/) as a fast [KVS](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) (Key-Value-Store) for [CAS](https://en.wikipedia.org/wiki/Content-addressable_storage) (Content-Addressable-Storage) usage.
