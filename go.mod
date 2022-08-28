@@ -10,5 +10,5 @@ require (
 	github.com/stretchr/testify v1.8.0
 	github.com/zeebo/blake3 v0.2.3
 	github.com/zenizh/go-capturer v0.0.0-20211219060012-52ea6c8fed04
-	golang.org/x/crypto v0.0.0-20220817201139-bc19a97f63c8
+	golang.org/x/crypto v0.0.0-20220826181053-bd7e27e6170d
 )
