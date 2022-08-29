@@ -42,6 +42,10 @@ linters:
   - interfacer
   - maligned
   - scopelint
+  # Deprecated linters since v1.49.0
+  - structcheck
+  - deadcode
+  - varcheck
   # Disable in order to test private functions
   - testpackage
   # Allow global variables

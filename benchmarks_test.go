@@ -251,7 +251,7 @@ func BenchmarkFromString_xxhash_as_checksum(b *testing.B) {
 //	Benchmark_uint16-4   	    3526	    337835 ns/op	       0 B/op	       0 allocs/op
 func Benchmark_uint16(b *testing.B) {
 	testFunc := func(input []byte) uint16 {
-		var out uint16 = 0
+		var out uint16
 
 		for i, b := range input {
 			if i%2 == 0 {

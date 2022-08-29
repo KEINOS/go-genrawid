@@ -127,7 +127,7 @@ func replaceLast16bit(input []byte, xor16 uint16) []byte {
 func xorSliceByte(input []byte) uint16 {
 	lenBitShift := 8
 
-	var out uint16 = 0
+	var out uint16
 
 	for i, b := range input {
 		if i%2 == 0 {

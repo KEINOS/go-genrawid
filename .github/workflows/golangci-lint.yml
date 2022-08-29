@@ -3,6 +3,7 @@ name: golangci-lint
 
 on:
   workflow_dispatch:
+  pull_request:
   push:
     branches: [ main ]
 
@@ -11,20 +12,15 @@ jobs:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v2
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-go@v3
         with:
+          go-version: '1'
+          check-latest: true
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          # Use latest version of golangci-lint
           version: latest
-
-          # Optional: working directory, useful for monorepos
-          # working-directory: somedir
-
-          # Optional: golangci-lint command line arguments.
-          args: --config ./.golangci.yml
-
-          # Optional: show only new issues if it's a pull request. The default value is `false`.
-          # only-new-issues: true
-
-          # Optional: if set to true then the action will use pre-installed Go
-          # skip-go-installation: true
