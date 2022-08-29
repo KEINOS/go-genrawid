@@ -44,7 +44,7 @@ services:
         VARIANT: 1.17-alpine
     volumes:
       - ..:/workspaces
-  # Service latest runs the tests on latest Go docker image (Go 1.18)
+  # Service latest runs the tests on latest Go docker image (Go 1.19)
   latest:
     build:
       context: ..

@@ -9,6 +9,7 @@ The following Go versions are tested regularly every week. The version of the mo
 | 1.16.15+ | :white_check_mark: |
 | 1.17.10+ | :white_check_mark: |
 | 1.18.2+  | :white_check_mark: |
+| 1.19+    | :white_check_mark: |
 
 ## Code Scaning
 
