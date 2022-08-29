@@ -1,3 +1,6 @@
+> __Warning__
+> This package has been deprecated. We have found a faster, simpler and more reliable way. See [issue #12](https://github.com/KEINOS/go-genrawid/issues/12).
+
 # GenRawID
 
 `genrawid` is a niche command line tool and/or Go package to generate a unique consistent number from the input.
