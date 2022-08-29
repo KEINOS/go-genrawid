@@ -17,6 +17,9 @@ import (
 // ----------------------------------------------------------------------------
 
 func TestCheckSum_default_golden(t *testing.T) {
+	t.Parallel()
+
+	//nolint:varnamelen // allow short variable names for readability
 	for i, test := range []struct {
 		input  string
 		expect string
@@ -40,6 +43,8 @@ func TestCheckSum_default_golden(t *testing.T) {
 }
 
 func TestCheckSum_nil_input(t *testing.T) {
+	t.Parallel()
+
 	checksum, err := CheckSum(nil)
 
 	require.Error(t, err, "nil input should be an error")
@@ -47,6 +52,7 @@ func TestCheckSum_nil_input(t *testing.T) {
 	assert.Nil(t, checksum, "returned checksum should be nil on error")
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func TestCheckSum_unknown_algo(t *testing.T) {
 	oldChkSumAlgo := ChkSumAlgo
 	defer func() {
@@ -68,6 +74,8 @@ func TestCheckSum_unknown_algo(t *testing.T) {
 // ----------------------------------------------------------------------------
 
 func TestHash_default_golden(t *testing.T) {
+	t.Parallel()
+
 	input := "This is a string"
 	hashByte, err := Hash(strings.NewReader(input))
 
@@ -80,6 +88,8 @@ func TestHash_default_golden(t *testing.T) {
 }
 
 func TestHash_nil_input(t *testing.T) {
+	t.Parallel()
+
 	checksum, err := Hash(nil)
 
 	require.Error(t, err, "nil input should be an error")
@@ -87,6 +97,7 @@ func TestHash_nil_input(t *testing.T) {
 	assert.Nil(t, checksum, "returned checksum should be nil on error")
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func TestHash_unknown_algo(t *testing.T) {
 	oldHashAlgo := HashAlgo
 	defer func() {
@@ -109,16 +120,19 @@ func TestHash_unknown_algo(t *testing.T) {
 
 type dummyReader struct{}
 
+//nolint:nonamedreturns // allow named return for interface compatibility
 func (r dummyReader) Read(p []byte) (n int, err error) {
 	return 0, nil
 }
 
+//nolint:nonamedreturns // allow named return for interface compatibility
 func (r dummyReader) WriteTo(w io.Writer) (n int64, err error) {
 	return 0, errors.New("forced error")
 }
 
 type dummyReader2 struct{}
 
+//nolint:nonamedreturns // allow named return for interface compatibility
 func (r dummyReader2) Read(p []byte) (n int, err error) {
 	return 0, errors.New("forced error")
 }

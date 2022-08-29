@@ -49,9 +49,11 @@ func (h THashAlgo) String() string {
 		return "blake3"
 	case HashAlgoSHA3_512:
 		return "sha3-512"
+	case HashAlgoUnknown:
+		fallthrough
+	default:
+		return "unknown"
 	}
-
-	return "unknown"
 }
 
 // String returns the string representation of the hash algorithm.
@@ -62,7 +64,9 @@ func (h TChkSumAlgo) String() string {
 		return "crc32"
 	case ChkSumXXHash:
 		return "xxhash"
+	case ChkSumUnknown:
+		fallthrough
+	default:
+		return "unknown"
 	}
-
-	return "unknown"
 }

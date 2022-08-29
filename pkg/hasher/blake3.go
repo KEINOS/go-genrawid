@@ -25,7 +25,7 @@ func _blake3(input io.Reader, lenOut int) ([]byte, error) {
 
 	if lenOut > lenMax || lenOut < 1 {
 		return nil, errors.Errorf(
-			"invalid output length. It must be between 1 and 8194. Given length: %d\n",
+			"invalid output length. It must be between 1 and 8194. Given length: %d",
 			lenOut,
 		)
 	}
@@ -47,15 +47,15 @@ func _blake3(input io.Reader, lenOut int) ([]byte, error) {
 	// Finalize the hash and return the digest.
 	// Digest takes a snapshot of the hash state and returns an object that can
 	// be used to read and seek through 2^64 bytes of digest output.
-	d := blake3Hasher.Digest()
+	tmpDigest := blake3Hasher.Digest()
 	hashed := make([]byte, lenOut)
 
-	if _, err := d.Seek(0, IoSeekStart); err != nil {
+	if _, err := tmpDigest.Seek(0, IoSeekStart); err != nil {
 		return nil, errors.Wrap(err, "failed to set the position to seek")
 	}
 
 	// The blake3.Digest.Read always fills the entire buffer and never errors.
-	_, _ = d.Read(hashed)
+	_, _ = tmpDigest.Read(hashed)
 
 	return hashed, nil
 }

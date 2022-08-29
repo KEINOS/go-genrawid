@@ -10,6 +10,8 @@ import (
 )
 
 func Test_crc32_golen(t *testing.T) {
+	t.Parallel()
+
 	input := "Hello world!"
 	r := strings.NewReader(input)
 
@@ -26,6 +28,8 @@ func Test_crc32_golen(t *testing.T) {
 }
 
 func Test_crc32_fail_copy(t *testing.T) {
+	t.Parallel()
+
 	// See hasher_test.go for dummyReader struct
 	d := dummyReader{}
 	checksum, err := _crc32(d)

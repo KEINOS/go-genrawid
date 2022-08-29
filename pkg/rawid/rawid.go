@@ -13,20 +13,24 @@ import (
 // ----------------------------------------------------------------------------
 
 // NewBase62 returns new rawid.ID object from base62 encoded string.
-func NewBase62(base62 string) (ID, error) {
+func NewBase62(base62string string) (ID, error) {
+	lenResultMax := 8 // Max byte length of result
+	base62 := 62      // base62
+
+	// Convert base62 string to bytes
 	i := new(big.Int)
 
-	bInt, ok := i.SetString(base62, 62)
+	bInt, ok := i.SetString(base62string, base62)
 	if !ok {
-		return nil, errors.Errorf("fail to decode Base62 input: %s", base62)
+		return nil, errors.Errorf("fail to decode Base62 input: %s", base62string)
 	}
 
 	var result ID = bInt.Bytes()
 
-	if len(result) > 8 {
+	if len(result) > lenResultMax {
 		return nil, errors.Errorf(
 			"over range. The given Base62 string has more than 8 bytes after decoding. input: %s",
-			base62,
+			base62string,
 		)
 	}
 
@@ -49,10 +53,11 @@ type ID []byte
 // The characters used are "0-9, a-z, A-Z".
 func (r ID) Base62() string {
 	i := new(big.Int)
+	base62 := 62
 
 	i.SetBytes(r[:])
 
-	return i.Text(62)
+	return i.Text(base62)
 }
 
 // Byte returns the rawid as a byte slice.

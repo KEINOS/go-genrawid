@@ -14,14 +14,14 @@ import (
 func ExampleNewBase62() {
 	input := "lYGhA16ahyf" // Max value in Base62
 
-	id, err := rawid.NewBase62(input)
+	rawID, err := rawid.NewBase62(input)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Base10:", id.Dec())
-	fmt.Println("Base16:", id.Hex())
-	fmt.Println("Base62:", id.Base62())
+	fmt.Println("Base10:", rawID.Dec())
+	fmt.Println("Base16:", rawID.Hex())
+	fmt.Println("Base62:", rawID.Base62())
 
 	// Output:
 	// Base10: -1

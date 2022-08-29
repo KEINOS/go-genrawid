@@ -14,8 +14,8 @@ func _xor8(input io.Reader) ([]byte, error) {
 	buffer := make([]byte, 1)
 
 	for {
-		n, err := input.Read(buffer)
-		if n > 0 {
+		lenRead, err := input.Read(buffer)
+		if lenRead > 0 {
 			sum = (sum + uint(buffer[0])) & mask
 
 			continue
@@ -25,7 +25,7 @@ func _xor8(input io.Reader) ([]byte, error) {
 			return nil, errors.Wrap(err, "error during reading data")
 		}
 
-		if err == io.EOF || n == 0 {
+		if err == io.EOF || lenRead == 0 {
 			break
 		}
 	}

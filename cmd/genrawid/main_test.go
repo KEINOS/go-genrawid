@@ -21,6 +21,7 @@ import (
 //  Golden Cases
 // ----------------------------------------------------------------------------
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_golden_base62(t *testing.T) {
 	// Set args
 	deferRecover := setDummyArgs(t, []string{
@@ -38,6 +39,7 @@ func Test_main_golden_base62(t *testing.T) {
 	assert.Equal(t, expect, actual)
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_golden_file(t *testing.T) {
 	// Set args
 	deferRecover := setDummyArgs(t, []string{
@@ -54,6 +56,7 @@ func Test_main_golden_file(t *testing.T) {
 	assert.Equal(t, expect, actual)
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_golden_help(t *testing.T) {
 	// Set args
 	deferRecover := setDummyArgs(t, []string{"-h"})
@@ -67,6 +70,7 @@ func Test_main_golden_help(t *testing.T) {
 	assert.Contains(t, out, "Flags:")
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_golden_hex_and_newline(t *testing.T) {
 	// Set args
 	deferRecover := setDummyArgs(t, []string{
@@ -85,6 +89,7 @@ func Test_main_golden_hex_and_newline(t *testing.T) {
 	assert.Equal(t, expect, actual)
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_golden_mode_fast(t *testing.T) {
 	// Set args
 	deferRecover := setDummyArgs(t, []string{
@@ -103,6 +108,7 @@ func Test_main_golden_mode_fast(t *testing.T) {
 	assert.Equal(t, expect, actual)
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_golden_stdin(t *testing.T) {
 	// Mock stdin
 	deferRecover := mockSTDIN(t, "abcdefgh")
@@ -121,6 +127,7 @@ func Test_main_golden_stdin(t *testing.T) {
 	assert.Equal(t, expect, actual)
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_golden_string(t *testing.T) {
 	// Set args
 	deferRecover := setDummyArgs(t, []string{"-s", "abcdefgh"})
@@ -135,6 +142,7 @@ func Test_main_golden_string(t *testing.T) {
 	assert.Equal(t, expect, actual)
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_golden_verify(t *testing.T) {
 	// Set args
 	deferRecover := setDummyArgs(t, []string{
@@ -158,6 +166,7 @@ func Test_main_golden_verify(t *testing.T) {
 //  Error Cases
 // ----------------------------------------------------------------------------
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_missing_args(t *testing.T) {
 	// Set empty args and defer recover
 	recoverArgs := setDummyArgs(t, []string{})
@@ -178,6 +187,7 @@ func Test_main_missing_args(t *testing.T) {
 	assert.Contains(t, out, "error: missing arguments")
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_path_was_dir(t *testing.T) {
 	// Set empty args and defer recover
 	recoverArgs := setDummyArgs(t, []string{
@@ -201,6 +211,7 @@ func Test_main_path_was_dir(t *testing.T) {
 	assert.Contains(t, out, "failed to read during scanning")
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_stdin_error(t *testing.T) {
 	// Backup the stdin
 	oldOsStdin := genrawid.OsStdin
@@ -234,6 +245,7 @@ func Test_main_stdin_error(t *testing.T) {
 	assert.Contains(t, out, "failed to read during scanning")
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_too_many_args(t *testing.T) {
 	// Set empty args and defer recover
 	recoverArgs := setDummyArgs(t, []string{
@@ -259,6 +271,7 @@ func Test_main_too_many_args(t *testing.T) {
 	assert.Contains(t, out, contains)
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_main_verify_error(t *testing.T) {
 	// Set empty args and defer recover
 	recoverArgs := setDummyArgs(t, []string{
