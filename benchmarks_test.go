@@ -62,7 +62,6 @@ func BenchmarkAND_manage(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		//nolint:govet // we do not use the variable during bench
 		d[i&ite] &= (i & ite) + 1
 	}
 }
@@ -75,7 +74,6 @@ func BenchmarkMOD_manage(b *testing.B) {
 	b.ResetTimer()
 
 	for i := 0; i < b.N; i++ {
-		//nolint:govet // we do not use the variable during bench
 		d[i%ite] %= (i % ite) + 1
 	}
 }
@@ -85,9 +83,10 @@ func BenchmarkMOD_manage(b *testing.B) {
 // ----------------------------------------------------------------------------
 
 // Benchresults:
-//   Benchmark_mode_fast-2   	    1820	    617081 ns/op	    4200 B/op	       4 allocs/op
-//   Benchmark_mode_fast-2   	    1326	   1088111 ns/op	    4200 B/op	       4 allocs/op
-//   Benchmark_mode_fast-2   	    1748	    669352 ns/op	    4200 B/op	       4 allocs/op
+//
+//	Benchmark_mode_fast-2   	    1820	    617081 ns/op	    4200 B/op	       4 allocs/op
+//	Benchmark_mode_fast-2   	    1326	   1088111 ns/op	    4200 B/op	       4 allocs/op
+//	Benchmark_mode_fast-2   	    1748	    669352 ns/op	    4200 B/op	       4 allocs/op
 func Benchmark_mode_fast(b *testing.B) {
 	oldMode := genrawid.IsModeFast
 	defer func() {
@@ -112,9 +111,10 @@ func Benchmark_mode_fast(b *testing.B) {
 }
 
 // Benchresults:
-//   Benchmark_mode_regular-2   	    2032	    603058 ns/op	    4272 B/op	       7 allocs/op
-//   Benchmark_mode_regular-2   	    2011	    709988 ns/op	    4272 B/op	       7 allocs/op
-//   Benchmark_mode_regular-2   	    1970	    636103 ns/op	    4272 B/op	       7 allocs/op
+//
+//	Benchmark_mode_regular-2   	    2032	    603058 ns/op	    4272 B/op	       7 allocs/op
+//	Benchmark_mode_regular-2   	    2011	    709988 ns/op	    4272 B/op	       7 allocs/op
+//	Benchmark_mode_regular-2   	    1970	    636103 ns/op	    4272 B/op	       7 allocs/op
 func Benchmark_mode_regular(b *testing.B) {
 	oldMode := genrawid.IsModeFast
 	defer func() {
@@ -126,6 +126,7 @@ func Benchmark_mode_regular(b *testing.B) {
 
 	input := string(testData(b)) // 1MB of data
 
+	//nolint:varnamelen // allow short variable names for readability
 	id, err := genrawid.FromString(input)
 	if err != nil {
 		b.Fatal(err)
@@ -149,12 +150,13 @@ func Benchmark_mode_regular(b *testing.B) {
 
 // Hash: BLAKE3-512, Checksum: CRC32C
 // Log:
-//   date: Sat May  7 03:45:45 UTC 2022
-//   goos: linux
-//   goarch: amd64
-//   pkg: github.com/KEINOS/go-genrawid
-//   cpu: Intel(R) Core(TM) i5-5257U CPU @ 2.70GHz
-//   BenchmarkFromString_BLAKE3_512-2   	    1912	    621682 ns/op	    4272 B/op	       7 allocs/op
+//
+//	date: Sat May  7 03:45:45 UTC 2022
+//	goos: linux
+//	goarch: amd64
+//	pkg: github.com/KEINOS/go-genrawid
+//	cpu: Intel(R) Core(TM) i5-5257U CPU @ 2.70GHz
+//	BenchmarkFromString_BLAKE3_512-2   	    1912	    621682 ns/op	    4272 B/op	       7 allocs/op
 func BenchmarkFromString_BLAKE3_512(b *testing.B) {
 	// Ensure to use BLAKE3 hash algorithm
 	oldHashAlgo := hasher.HashAlgo
@@ -179,12 +181,13 @@ func BenchmarkFromString_BLAKE3_512(b *testing.B) {
 
 // Hash: SHA3-512, Checksum: CRC32C
 // Log:
-//   date: Sat May  7 03:52:43 UTC 2022
-//   goos: linux
-//   goarch: amd64
-//   pkg: github.com/KEINOS/go-genrawid
-//   cpu: Intel(R) Core(TM) i5-5257U CPU @ 2.70GHz
-//   BenchmarkFromString_SHA3_512-2   	     158	   7497839 ns/op	    5232 B/op	      10 allocs/op
+//
+//	date: Sat May  7 03:52:43 UTC 2022
+//	goos: linux
+//	goarch: amd64
+//	pkg: github.com/KEINOS/go-genrawid
+//	cpu: Intel(R) Core(TM) i5-5257U CPU @ 2.70GHz
+//	BenchmarkFromString_SHA3_512-2   	     158	   7497839 ns/op	    5232 B/op	      10 allocs/op
 func BenchmarkFromString_SHA3_512(b *testing.B) {
 	// Switch hash algorithm to SHA3
 	oldHashAlgo := hasher.HashAlgo
@@ -209,12 +212,13 @@ func BenchmarkFromString_SHA3_512(b *testing.B) {
 
 // Hash: BLAKE3, Checksum: xxHash
 // Log:
-//   date: Tue May 10 04:43:54 UTC 2022
-//   goos: linux
-//   goarch: amd64
-//   pkg: github.com/KEINOS/go-genrawid
-//   cpu: Intel(R) Core(TM) i5-5257U CPU @ 2.70GHz
-//   BenchmarkFromString_xxhash_as_checksum-2   	    1702	    687642 ns/op	    4264 B/op	       7 allocs/op
+//
+//	date: Tue May 10 04:43:54 UTC 2022
+//	goos: linux
+//	goarch: amd64
+//	pkg: github.com/KEINOS/go-genrawid
+//	cpu: Intel(R) Core(TM) i5-5257U CPU @ 2.70GHz
+//	BenchmarkFromString_xxhash_as_checksum-2   	    1702	    687642 ns/op	    4264 B/op	       7 allocs/op
 func BenchmarkFromString_xxhash_as_checksum(b *testing.B) {
 	// Switch checksum from CRC32C to xxHash
 	oldChkSumAlgo := hasher.ChkSumAlgo
@@ -242,11 +246,12 @@ func BenchmarkFromString_xxhash_as_checksum(b *testing.B) {
 // ----------------------------------------------------------------------------
 
 // Benchresults:
-//   Benchmark_uint16-4   	    3349	    362437 ns/op	       0 B/op	       0 allocs/op
-//   Benchmark_uint16-4   	    3526	    337835 ns/op	       0 B/op	       0 allocs/op
+//
+//	Benchmark_uint16-4   	    3349	    362437 ns/op	       0 B/op	       0 allocs/op
+//	Benchmark_uint16-4   	    3526	    337835 ns/op	       0 B/op	       0 allocs/op
 func Benchmark_uint16(b *testing.B) {
 	testFunc := func(input []byte) uint16 {
-		var out uint16 = 0
+		var out uint16
 
 		for i, b := range input {
 			if i%2 == 0 {
@@ -280,8 +285,9 @@ func Benchmark_uint16(b *testing.B) {
 }
 
 // Benchresults:
-//   Benchmark_bigNewInt_SetBytes-4   	    1024	   1163578 ns/op	       8 B/op	       1 allocs/op
-//   Benchmark_bigNewInt_SetBytes-4   	     997	   1170646 ns/op	       8 B/op	       1 allocs/op
+//
+//	Benchmark_bigNewInt_SetBytes-4   	    1024	   1163578 ns/op	       8 B/op	       1 allocs/op
+//	Benchmark_bigNewInt_SetBytes-4   	     997	   1170646 ns/op	       8 B/op	       1 allocs/op
 func Benchmark_bigNewInt_SetBytes(b *testing.B) {
 	testFunc := func(input []byte) uint16 {
 		out := make([]byte, 2)
@@ -314,8 +320,9 @@ func Benchmark_bigNewInt_SetBytes(b *testing.B) {
 // ----------------------------------------------------------------------------
 
 // Benchresults:
-//   Benchmark_uint16ToBytes_PutUint16-4   	1000000000	         0.3451 ns/op	       0 B/op	       0 allocs/op
-//   Benchmark_uint16ToBytes_PutUint16-4   	1000000000	         0.3514 ns/op	       0 B/op	       0 allocs/op
+//
+//	Benchmark_uint16ToBytes_PutUint16-4   	1000000000	         0.3451 ns/op	       0 B/op	       0 allocs/op
+//	Benchmark_uint16ToBytes_PutUint16-4   	1000000000	         0.3514 ns/op	       0 B/op	       0 allocs/op
 func Benchmark_uint16ToBytes_PutUint16(b *testing.B) {
 	testFunc := func(input uint16) []byte {
 		out := make([]byte, 2)
@@ -338,8 +345,9 @@ func Benchmark_uint16ToBytes_PutUint16(b *testing.B) {
 }
 
 // Benchresults:
-//   Benchmark_uint16ToBytes_shift-4   	1000000000	         0.3353 ns/op	       0 B/op	       0 allocs/op
-//   Benchmark_uint16ToBytes_shift-4   	1000000000	         0.3327 ns/op	       0 B/op	       0 allocs/op
+//
+//	Benchmark_uint16ToBytes_shift-4   	1000000000	         0.3353 ns/op	       0 B/op	       0 allocs/op
+//	Benchmark_uint16ToBytes_shift-4   	1000000000	         0.3327 ns/op	       0 B/op	       0 allocs/op
 func Benchmark_uint16ToBytes_shift(b *testing.B) {
 	testFunc := func(input uint16) []byte {
 		out := make([]byte, 2)

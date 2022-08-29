@@ -8,6 +8,8 @@ import (
 )
 
 func TestNewBase62_over_range(t *testing.T) {
+	t.Parallel()
+
 	input := "ZZZZZZZZZZZ"
 	id, err := NewBase62(input)
 
@@ -17,6 +19,8 @@ func TestNewBase62_over_range(t *testing.T) {
 }
 
 func TestNewBase62_unknown_string(t *testing.T) {
+	t.Parallel()
+
 	input := "&"
 	id, err := NewBase62(input)
 

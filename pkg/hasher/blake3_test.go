@@ -10,7 +10,9 @@ import (
 )
 
 func Test_blake3_lenOut_in_range(t *testing.T) {
-	input := "foo bar"
+	t.Parallel()
+
+	const input = "foo bar"
 
 	{
 		r := strings.NewReader(input)
@@ -42,7 +44,9 @@ func Test_blake3_lenOut_in_range(t *testing.T) {
 }
 
 func Test_blake3_lenOut_out_of_range(t *testing.T) {
-	input := "foo bar"
+	t.Parallel()
+
+	const input = "foo bar"
 
 	{
 		r := strings.NewReader(input)
@@ -67,6 +71,8 @@ func Test_blake3_lenOut_out_of_range(t *testing.T) {
 }
 
 func Test_blake3_scan_error(t *testing.T) {
+	t.Parallel()
+
 	// See hasher_test.go for dummyReader struct
 	d := dummyReader{}
 
@@ -77,6 +83,7 @@ func Test_blake3_scan_error(t *testing.T) {
 	assert.Nil(t, hashed)
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_blake3_seek_error(t *testing.T) {
 	// Backup and defer restore before mocking io.SeekStart
 	oldIoSeekStart := IoSeekStart

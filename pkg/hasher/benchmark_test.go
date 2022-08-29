@@ -42,7 +42,8 @@ func BenchmarkHashBLAKE3(b *testing.B) {
 	}()
 
 	hasher.HashAlgo = hasher.HashAlgoBLAKE3
-	input := "This is a string"
+
+	const input = "This is a string"
 
 	b.ResetTimer()
 
@@ -61,7 +62,8 @@ func BenchmarkHashSHA3(b *testing.B) {
 	}()
 
 	hasher.HashAlgo = hasher.HashAlgoSHA3_512
-	input := "This is a string"
+
+	const input = "This is a string"
 
 	b.ResetTimer()
 

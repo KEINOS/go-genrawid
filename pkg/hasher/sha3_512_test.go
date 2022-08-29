@@ -14,6 +14,8 @@ import (
 // ----------------------------------------------------------------------------
 
 func Test_sha3_512_golden(t *testing.T) {
+	t.Parallel()
+
 	for _, test := range []struct {
 		input  string
 		expect string
@@ -47,6 +49,8 @@ func Test_sha3_512_golden(t *testing.T) {
 }
 
 func Test_sha3_512_output_length_out_of_range(t *testing.T) {
+	t.Parallel()
+
 	input := "foo bar"
 
 	{
@@ -70,6 +74,8 @@ func Test_sha3_512_output_length_out_of_range(t *testing.T) {
 }
 
 func Test_sha3_512_read_error(t *testing.T) {
+	t.Parallel()
+
 	// See hasher_test.go for dummyReader struct
 	d := dummyReader{}
 

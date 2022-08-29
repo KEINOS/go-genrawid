@@ -29,6 +29,8 @@ func Example_xxhash() {
 }
 
 func Test_xxhash_golden(t *testing.T) {
+	t.Parallel()
+
 	for _, test := range []struct {
 		inputStr  string
 		expectHex string
@@ -59,6 +61,8 @@ func Test_xxhash_golden(t *testing.T) {
 }
 
 func Test_xxhash_lenOut_too_long(t *testing.T) {
+	t.Parallel()
+
 	input := "a"
 	r := strings.NewReader(input)
 
@@ -69,6 +73,8 @@ func Test_xxhash_lenOut_too_long(t *testing.T) {
 }
 
 func Test_xxhash_read_error(t *testing.T) {
+	t.Parallel()
+
 	// See hasher_test.go for dummyReader2 struct
 	d := dummyReader2{}
 

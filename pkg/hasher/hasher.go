@@ -47,9 +47,9 @@ var ChkSumAlgo = chksumAlgoDefault
 // By default it uses Castagnoli polynomial. Overwrite this value to use a
 // different polynomial.
 //
-//   Example:
-//     genrawid.CRC32Poly = crc32.Koopman
-//     genrawid.CRC32Poly = crc32.IEEE
+//	Example:
+//	  genrawid.CRC32Poly = crc32.Koopman
+//	  genrawid.CRC32Poly = crc32.IEEE
 //
 // Note that this won't affect if ChkSumAlgo is other than CRC32.
 var CRC32Poly = crc32PolyDefault
@@ -77,9 +77,11 @@ func Hash(input io.Reader) (rawid.ID, error) {
 		return _blake3(input, HashLen)
 	case HashAlgoSHA3_512:
 		return _sha3_512(input, HashLen)
+	case HashAlgoUnknown:
+		fallthrough
+	default:
+		return nil, errors.Errorf("unknown hash algorithm: %s", HashAlgo)
 	}
-
-	return nil, errors.Errorf("unknown hash algorithm: %s", HashAlgo)
 }
 
 // CheckSum returns the CRC-32 checksum of input.
@@ -98,7 +100,9 @@ func CheckSum(input io.Reader) (rawid.ID, error) {
 		return _crc32(input)
 	case ChkSumXXHash:
 		return _xxhash(input, lenByte)
+	case ChkSumUnknown:
+		fallthrough
+	default:
+		return nil, errors.Errorf("unknown checksum algorithm: %s", ChkSumAlgo)
 	}
-
-	return nil, errors.Errorf("unknown checksum algorithm: %s", ChkSumAlgo)
 }

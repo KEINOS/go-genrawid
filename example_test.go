@@ -29,7 +29,7 @@ func ExampleFromString() {
 }
 
 func ExampleFromFile() {
-	pathFile := "./testdata/msg.txt" // msg.txt ==> "abcdefgh"
+	const pathFile = "./testdata/msg.txt" // msg.txt ==> "abcdefgh"
 
 	rawid, err := genrawid.FromFile(pathFile)
 	if err != nil {
@@ -57,7 +57,9 @@ func ExampleFromFile_fast_mode() {
 
 	rawid, err := genrawid.FromFile(pathFile)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err.Error())
+
+		return
 	}
 
 	fmt.Println(rawid.Hex())
@@ -85,7 +87,9 @@ func ExampleFromStdin() {
 
 	osFile, err := os.Open(pathFile)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err.Error())
+
+		return
 	}
 
 	genrawid.OsStdin = osFile // <-- mock!
@@ -94,7 +98,9 @@ func ExampleFromStdin() {
 	// stdin and generate a rawid.
 	rawid, err := genrawid.FromStdin()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err.Error())
+
+		return
 	}
 
 	fmt.Println(rawid.Hex())

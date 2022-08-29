@@ -3,6 +3,7 @@ package hasher_test
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
 	"github.com/KEINOS/go-genrawid/pkg/hasher"
@@ -43,7 +44,9 @@ func ExampleCheckSum_xxhash() {
 
 	sumByte, err := hasher.CheckSum(r)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err.Error())
+
+		return
 	}
 
 	// By default, the checksum algorithm is CRC32C with 4 bytes of length.
@@ -71,6 +74,16 @@ func ExampleHash() {
 	fmt.Printf("Length of full hash   : %v bytes\n", len(hashByte))
 	fmt.Printf("First 32 bytes of hash: %x\n", hashByte[:32])
 
+	// Output:
+	// Hash algorithm(BLAKE3): blake3
+	// Length of full hash   : 64 bytes
+	// First 32 bytes of hash: 718b749f12a61257438b2ea6643555fd995001c9d9ff84764f93f82610a780f2
+}
+
+func ExampleHash_change_hash_algorithm() {
+	input := "This is a string"
+	tmpReader := strings.NewReader(input)
+
 	// To change the hash algorithm set the hasher.HashAlgo global variable.
 	// Here, we temporary set SHA3-512 as the hashing algorithm.
 	hasher.HashAlgo = hasher.HashAlgoSHA3_512
@@ -80,9 +93,11 @@ func ExampleHash() {
 	}()
 
 	// SHA3-512 returns 64 bytes of length hash as well but slower than BLAKE3
-	hashByte, err = hasher.Hash(r)
+	hashByte, err := hasher.Hash(tmpReader)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintln(os.Stderr, err)
+
+		return
 	}
 
 	fmt.Printf("Hash algorithm(SHA3)  : %v\n", hasher.HashAlgo.String())
@@ -90,12 +105,9 @@ func ExampleHash() {
 	fmt.Printf("First 32 bytes of hash: %x\n", hashByte[:32])
 
 	// Output:
-	// Hash algorithm(BLAKE3): blake3
-	// Length of full hash   : 64 bytes
-	// First 32 bytes of hash: 718b749f12a61257438b2ea6643555fd995001c9d9ff84764f93f82610a780f2
 	// Hash algorithm(SHA3)  : sha3-512
 	// Length of full hash   : 64 bytes
-	// First 32 bytes of hash: a69f73cca23a9ac5c8b567dc185a756e97c982164fe25859e0d1dcc1475c80a6
+	// First 32 bytes of hash: bcffce0fa80f0bbaaa7c65725df4c474d298f2b69459e09284c8d9bc22c19201
 }
 
 func ExampleTChkSumAlgo_String() {

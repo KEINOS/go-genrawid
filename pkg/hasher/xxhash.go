@@ -14,15 +14,15 @@ import (
 // the max length 8 Byte.
 func _xxhash(input io.Reader, lenOut int) ([]byte, error) {
 	if err := preCheckXxHash(&lenOut); err != nil {
-		return nil, errors.Wrap(err, "error on _xxhash.")
+		return nil, errors.Wrap(err, "error on _xxhash")
 	}
 
 	xxHasher := xxhash.New()
 	buffer := make([]byte, 1) // set buffer size as 1 Byte to read
 
 	for {
-		n, err := input.Read(buffer) // read input to buffer
-		if n > 0 {
+		lenRead, err := input.Read(buffer) // read input to buffer
+		if lenRead > 0 {
 			// xxhash.Digest.Write always returns len(b), nil and no error
 			_, _ = xxHasher.Write(buffer)
 
@@ -33,7 +33,7 @@ func _xxhash(input io.Reader, lenOut int) ([]byte, error) {
 			return nil, errors.Wrap(err, "error during reading data")
 		}
 
-		if err == io.EOF || n == 0 {
+		if err == io.EOF || lenRead == 0 {
 			break
 		}
 	}
@@ -49,7 +49,7 @@ func preCheckXxHash(lenOut *int) error {
 	}
 
 	if *lenOut > maxLen || *lenOut < 0 {
-		return errors.Errorf("lenOut is too long or short. must be between 0-8. given: %v\n", lenOut)
+		return errors.Errorf("lenOut is too long or short. must be between 0-8. given: %v", lenOut)
 	}
 
 	return nil

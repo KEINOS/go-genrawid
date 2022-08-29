@@ -15,7 +15,7 @@ import (
 var (
 	inStr    string // it holds the input string from the arg.
 	inVerify string // it holds the given rawid to compare.
-	lf       string // line-feed to use if set.
+	lineFeed string // line-feed to use if set.
 	pathFile string // file path to read if set.
 
 	isBase62 bool // outputs the results in base62 if true.
@@ -89,11 +89,15 @@ func PreRun() error {
 }
 
 // Run is the actual function of the app.
-func Run() (err error) {
-	if err = PreRun(); err != nil {
+//
+//nolint:cyclop // complexity is 13 but it's okay.
+func Run() error {
+	err := PreRun()
+	if err != nil {
 		return errors.Wrap(err, "error during pre-run")
 	}
 
+	//nolint:varnamelen // allow short variable names for readability
 	var id rawid.ID
 
 	switch {
@@ -116,22 +120,22 @@ func Run() (err error) {
 		}
 	}
 
-	output := ""
+	var output string
 
 	// Format output
 	switch {
 	case isHex:
-		output = fmt.Sprintf("0x%v%v", id.Hex(), lf)
+		output = fmt.Sprintf("0x%v%v", id.Hex(), lineFeed)
 	case isBase62:
-		output = fmt.Sprintf("%v%v", id.Base62(), lf)
+		output = fmt.Sprintf("%v%v", id.Base62(), lineFeed)
 	default:
-		output = fmt.Sprintf("%v%v", id.Dec(), lf)
+		output = fmt.Sprintf("%v%v", id.Dec(), lineFeed)
 	}
 
 	if isVerify {
-		if output != (inVerify + lf) {
+		if output != (inVerify + lineFeed) {
 			return errors.Errorf(
-				"the two rawids did not match. Given: %v, Calculated: %v\n",
+				"the two rawids did not match. Given: %v, Calculated: %v",
 				inVerify,
 				output,
 			)
@@ -139,6 +143,7 @@ func Run() (err error) {
 	}
 
 	// Print the calculated rawid
+	//nolint:forbidigo // allow printing to stdout
 	fmt.Print(output)
 
 	return nil
@@ -164,7 +169,7 @@ func chkOptFile(args []string) {
 func chkOptLineFeed() {
 	if isLF {
 		// Use \n as a line break char
-		lf = "\n"
+		lineFeed = "\n"
 	}
 }
 
@@ -204,7 +209,7 @@ func resetFlagValues() {
 
 	inStr = ""
 	inVerify = ""
-	lf = ""
+	lineFeed = ""
 	pathFile = ""
 }
 

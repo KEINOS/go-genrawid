@@ -60,12 +60,15 @@ func FromString(input string) (rawid.ID, error) {
 // ----------------------------------------------------------------------------
 
 // It combines the two input as one in 8 byte length.
+//
+//nolint:varnamelen // allow short variable names for readability.
 func chopAndMergeBytes(a, b []byte) (rawid.ID, error) {
 	if len(a) < 4 || len(b) < 4 {
 		return nil, errors.New("failed to combine bytes. Both of the input must be 4byte or more")
 	}
 
-	rawid := make([]byte, 8)
+	lenByte := 8
+	rawid := make([]byte, lenByte)
 
 	copy(rawid, a)     // Upper half as hash
 	copy(rawid[4:], b) // Bottom half as checksum
@@ -102,7 +105,8 @@ func genRawid(input io.Reader) (rawid.ID, error) {
 
 	// Calculate the xor16 checksum of the hash.
 	chkSum := xorSliceByte(hashByte)
-	rawid := make([]byte, 8)
+	lenByte := 8
+	rawid := make([]byte, lenByte)
 
 	// Set hash
 	copy(rawid, hashByte)
@@ -112,20 +116,24 @@ func genRawid(input io.Reader) (rawid.ID, error) {
 }
 
 func replaceLast16bit(input []byte, xor16 uint16) []byte {
-	input[len(input)-2] = byte(xor16 >> 8)
+	lenBitShift := 8
+
+	input[len(input)-2] = byte(xor16 >> lenBitShift)
 	input[len(input)-1] = byte(xor16)
 
 	return input
 }
 
 func xorSliceByte(input []byte) uint16 {
-	var out uint16 = 0
+	lenBitShift := 8
+
+	var out uint16
 
 	for i, b := range input {
 		if i%2 == 0 {
 			out ^= uint16(b)
 		} else {
-			out ^= uint16(b) << 8
+			out ^= uint16(b) << lenBitShift
 		}
 	}
 

@@ -19,7 +19,7 @@ func _sha3_512(input io.Reader, lenOut int) ([]byte, error) {
 
 	if lenOut < 1 || lenOut > lenMax {
 		return nil, errors.Errorf(
-			"invalid output length. It must be between 1 and %d. Given length: %d\n",
+			"invalid output length. It must be between 1 and %d. Given length: %d",
 			lenMax,
 			lenOut,
 		)

@@ -34,6 +34,8 @@ func Example_xor8() {
 }
 
 func Test_xor8_read_error(t *testing.T) {
+	t.Parallel()
+
 	// See hasher_test.go for dummyReader2 struct
 	d := dummyReader2{}
 

@@ -2,7 +2,6 @@
 package genrawid
 
 import (
-	"log"
 	"os"
 	"strings"
 	"testing"
@@ -17,6 +16,8 @@ import (
 // ----------------------------------------------------------------------------
 
 func TestFromFile_big_file(t *testing.T) {
+	t.Parallel()
+
 	pathFile := "testdata/dummy.bin"
 
 	rawid, err := FromFile(pathFile)
@@ -25,6 +26,7 @@ func TestFromFile_big_file(t *testing.T) {
 	assert.Equal(t, "-2929669798473946006", rawid.Dec())
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func TestFromStdin_big_file(t *testing.T) {
 	// Backup and defer recover the stdin
 	oldStdin := OsStdin
@@ -36,21 +38,19 @@ func TestFromStdin_big_file(t *testing.T) {
 	pathFile := "testdata/dummy.bin"
 
 	osFile, err := os.Open(pathFile)
-	if err != nil {
-		log.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	OsStdin = osFile
 
 	rawid, err := FromStdin()
-	if err != nil {
-		log.Fatal(err)
-	}
+	require.NoError(t, err)
 
 	assert.Equal(t, "-2929669798473946006", rawid.Dec())
 }
 
 func TestFromFile_file_not_found(t *testing.T) {
+	t.Parallel()
+
 	pathFile := "dummy/unknown/file"
 
 	rawid, err := FromFile(pathFile)
@@ -65,6 +65,8 @@ func TestFromFile_file_not_found(t *testing.T) {
 // ----------------------------------------------------------------------------
 
 func Test_chopAndMergeBytes_golden(t *testing.T) {
+	t.Parallel()
+
 	a := []byte{0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8}
 	b := []byte{0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF, 0x10}
 
@@ -79,6 +81,8 @@ func Test_chopAndMergeBytes_golden(t *testing.T) {
 }
 
 func Test_chopAndMergeBytes_too_few_slice(t *testing.T) {
+	t.Parallel()
+
 	{
 		a := []byte{0x1, 0x2, 0x3}
 		b := []byte{0x9, 0xA, 0xB, 0xC, 0xD, 0xE}
@@ -102,6 +106,8 @@ func Test_chopAndMergeBytes_too_few_slice(t *testing.T) {
 }
 
 func Test_genRawid_nil_input(t *testing.T) {
+	t.Parallel()
+
 	rawid, err := genRawid(nil)
 
 	require.Error(t, err)
@@ -109,6 +115,7 @@ func Test_genRawid_nil_input(t *testing.T) {
 	assert.Nil(t, rawid)
 }
 
+//nolint:paralleltest // do not parallelize due to dependency on other tests
 func Test_genRawid_use_undefined_algo(t *testing.T) {
 	// Set unknown checksum algorithm
 	oldChkSumAlgo := hasher.ChkSumAlgo
@@ -130,6 +137,8 @@ func Test_genRawid_use_undefined_algo(t *testing.T) {
 }
 
 func Test_replaceLast16bit(t *testing.T) {
+	t.Parallel()
+
 	inHash := []byte{0x01, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08}
 	inChkSum := uint16(0xffff)
 
@@ -140,6 +149,8 @@ func Test_replaceLast16bit(t *testing.T) {
 }
 
 func Test_xorSliceByte(t *testing.T) {
+	t.Parallel()
+
 	input := []byte{0x01, 0x01, 0x02, 0x03, 0x04, 0x05}
 
 	expect := uint16(0x0707) // 0x01 ^ 0x02 ^ 0x4 = 0x07, 0x01 ^ 0x03 ^ 0x5 = 0x07
